@@ -1,0 +1,25 @@
+<div class="bor">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome Attività</th>
+                <th>Nome Tit.</th>
+                <th>Indirizzo</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of listaEsercenti">
+                <td></td>
+                <td>{{item.nomeAttivita}}</td>
+                <td>{{item.nomeEsercente}}</td>
+                <td>{{item.via}}</td>
+
+                <td><a href="#" class="sb2-2-1-edit"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

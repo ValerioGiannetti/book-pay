@@ -1,0 +1,149 @@
+# ==============================================================
+# = API GATEWAY Server Auth
+# ==============================================================
+
+spring:
+  application:
+    name: GatewayLeonco
+  data:
+    mongodb:
+      database: leonco_db
+      port: 27017
+      host: localhost  
+server:
+  port: 8765
+  tomcat:
+    max-threads: 5
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}    fetch-registry: true    register-with-eureka: true
+  instance:
+    hostname: localhost
+zuul:
+  ribbon:    eager-load:      enabled: true
+      
+  host:
+    connect-timeout-millis: 120000
+    socket-timeout-millis: 120000
+  stripPrefix: true
+  ignoredServices: '*'
+  routes:
+    registrazione:
+      path: /gateway-registrazione/**
+      serviceId: RegistrazioneLeoncoService
+      sensitive-headers: Cookie,Set-Cookie
+    articoli:
+      path: /gateway-articoli/**
+      serviceId: ArticoliLeoncoService
+      sensitive-headers: Cookie,Set-Cookie
+    commerciante:
+      path: /gateway-commerciante/**
+      serviceId: CommerciantiLeoncoService
+      sensitive-headers: Cookie,Set-Cookie  
+    merceologia:
+      path: /gateway-merceologia/**
+      serviceId: MerceologiaLeoncoService
+      sensitive-headers: Cookie,Set-Cookie
+    promozioni:
+      path: /gateway-promozioni/**
+      serviceId: PromoLeoncoService
+      sensitive-headers: Cookie,Set-Cookie    
+    login:
+      url: http://localhost:8765/api/autorizzazione/
+      sensitive-headers: Cookie,Set-Cookie
+    
+      
+ArticoliLeoncoService:
+  ribbon:
+   ReadTimeout: 120000
+   ConnectTimeout: 120000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+   eager-load:    enabled: true  
+CommerciantiLeoncoService:
+  ribbon:
+   ReadTimeout: 120000
+   ConnectTimeout: 120000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+   eager-load:
+    enabled: true
+MerceologiaLeoncoService:
+  ribbon:
+   ReadTimeout: 60000
+   ConnectTimeout: 20000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100 
+   
+PromoLeoncoService:
+  ribbon:
+   ReadTimeout: 60000
+   ConnectTimeout: 20000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+   eager-load:
+    enabled: true  
+RegistrazioneLeoncoService:
+  ribbon:
+   ReadTimeout: 60000
+   ConnectTimeout: 20000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+   eager-load:
+    enabled: true 
+      
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 600000
+            
+            
+    
+# ==============================================================
+# = Logs Parameters
+# ==============================================================        
+logging:
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.security: DEBUG
+
+# ==============================================================
+# = Actuator Parameters
+# ==============================================================
+management:
+  info:
+    git:
+      mode: full
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,routes,filters
+        
+# ==============================================================
+# = Actuator Info
+# ==============================================================
+info:
+  assistenza:
+    nome: "Leonco Assistenza"
+  nome:
+    nome-app: "Leonco Gateway - Versione JWT"    
+            
+            
+# ==============================================================
+# = sicurezza Properties 
+# ==============================================================
+sicurezza:
+    uri: /gateway/auth
+    header: Authorization
+    prefix: Bearer 
+    expiration: 86400
+    secret: leonco_2020

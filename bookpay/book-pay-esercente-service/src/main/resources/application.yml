@@ -1,0 +1,32 @@
+
+server:
+  port: 7050
+  
+spring:
+  application:
+    name: EsercenteBookPay
+  data:
+    mongodb:
+      database: book_pay_db
+      port: 27017
+      host: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    hostname: localhost
+
+ribbon:
+  eureka:
+    enabled: true
+
+
+    
+logging:
+  level:
+    org.apache.logging.slf4j: INFO
+    org.springframework.data.mongodb.repository.query: DEBUG
+    org.springframework.data.mongodb.core: DEBUG
+    
