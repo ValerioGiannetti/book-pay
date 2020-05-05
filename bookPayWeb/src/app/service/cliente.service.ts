@@ -13,7 +13,7 @@ export class ClienteService {
 
   listaPrenotazioniWeek(id:string){
     
-    return this.http.get(this.url+"lista-prenotazioni/5eadec7ebf7243f9e0fdbd2a");
+    return this.http.get(this.url+"lista-prenotazioni/"+id);
   }
 
 }

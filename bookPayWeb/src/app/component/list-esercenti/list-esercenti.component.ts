@@ -14,6 +14,7 @@ export class ListEsercentiComponent implements OnInit {
   listaEsercenti: Array<Esercente>;
   ngOnInit(): void {
     this.listaEsercenti = new Array<Esercente>();
+    this.getListaEsercenti();
   }
 
   getListaEsercenti() {

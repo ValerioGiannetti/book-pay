@@ -4,5 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 @FeignClient(value = "EsercenteBookPayService",url = "http://localhost:6050")
 public interface EsercenteProxy {
 
+	public void codaClientePrenotezione(String idCliente, String idEsercente);
+	
 	
 }

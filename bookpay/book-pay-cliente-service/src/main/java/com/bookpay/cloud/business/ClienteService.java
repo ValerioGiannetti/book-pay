@@ -4,7 +4,7 @@ public interface ClienteService {
 
 	public void registraCliente(Cliente cliente);
 
-	public void prenotaServizio(Prenotazione prenotazione);
+	public void prenotaServizio(String idCliente,String idEsercente);
 
 	public ContainerCliente listaPrenotazioniWeek(String idCliente);
 

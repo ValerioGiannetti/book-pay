@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   url_lista_esercenti: "http://localhost:8765/gateway-esercente/api/gestione-esercente/",
   base_url_auth: "http://localhost:8765/api/autorizzazione/",
-  url_lista_prenotazioni:"http://localhost:8765/gateway-cliente/api/gestione/prenotazioni/"
+  url_lista_prenotazioni:"http://localhost:8765/gateway-clienti/api/gestione/prenotazioni/"
 };
 
 /*

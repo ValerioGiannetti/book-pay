@@ -32,6 +32,9 @@ export class LoginComponent implements OnInit {
     this.auth.currentUser.subscribe(data => {
       this.currentUser = data;
     });
+    if(!this.auth.currentUser._isScalar){
+      this.currentUser = new User();
+    }
     this.returnUrl = this.route.snapshot.queryParams['home'] || '/';
 
   }

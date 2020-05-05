@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { Prenotazioni } from 'src/app/model/prenotazioni';
+import { User } from 'src/app/model/user';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-cliente',
@@ -9,13 +11,15 @@ import { Prenotazioni } from 'src/app/model/prenotazioni';
 })
 export class ClienteComponent implements OnInit {
 
-  constructor(private service:ClienteService) { }
+  constructor(private service:ClienteService,
+    private auth:AuthService) { }
   listaPrenotazioniWeek:Array<Prenotazioni>;
-  
+  user:User;
   
   ngOnInit(): void {
+    this.user = this.auth.currentUserValue;
     this.listaPrenotazioniWeek = new Array<Prenotazioni>();
-    this.getListaPrenotazioniWeek(null);
+    this.getListaPrenotazioniWeek(this.user.idUtente);
 
   }
   getListaPrenotazioniWeek(id:string){

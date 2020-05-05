@@ -6,4 +6,5 @@ export class User {
     password:string;
     cliente:Cliente;
     token:string;
+    idUtente:string;
 }    

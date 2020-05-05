@@ -1,5 +1,6 @@
 package com.bookpay.cloud.business;
 
+import java.util.Calendar;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class ClienteServiceImpl implements ClienteService {
 	@Autowired
 	private PrenotazioneRepository prenotazioneRepo;
 	
-	
+	private EsercenteProxy proxy;
 	
 	
 	
@@ -39,10 +40,19 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public void prenotaServizio(Prenotazione prenotazione) {
+	public void prenotaServizio(String idCliente,String idEsercente) {
 		logger.info("inizio prenotaServizio");
+		
 		try {
+			Prenotazione prenotazione = new Prenotazione();
+			prenotazione.setDataPrenotazione(Calendar.getInstance().getTime());
+			prenotazione.setIdCliente(idCliente);
+			prenotazione.setIdEsercente(idEsercente);
 			prenotazioneRepo.insert(prenotazione);
+			
+			proxy.codaClientePrenotezione(idCliente,idEsercente);
+			
+			
 		}catch (Exception e) {
 			logger.error("errore prenotaServizio "+e.getMessage());
 			throw e;
@@ -57,13 +67,10 @@ public class ClienteServiceImpl implements ClienteService {
 		final ContainerCliente output = new ContainerCliente();
 		try {
 			
-			
-			
-			
 			Optional<Cliente>op = repository.findById(idCliente);
 			op.ifPresent(value->{
 				output.setCliente(value);
-				output.setPrenotazione(prenotazioneRepo.findByIdCliente(value.getId()));
+				output.setPrenotazione(prenotazioneRepo.findByIdCliente(idCliente));
 			});
 		}catch (Exception e) {
 			logger.error("errore listaPrenotazioniWeek "+e.getMessage());

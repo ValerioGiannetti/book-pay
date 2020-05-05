@@ -9,7 +9,7 @@ export class Esercente {
 	tipologiaAttivita:string;
 	oraApertura:number;
 	oraChiusura:number;
-	
+	numeroTelefono:number;
 	password:string;
 	email:string;
     indirizzo:string
