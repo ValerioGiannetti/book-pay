@@ -1,0 +1,48 @@
+
+   
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                <img src="/src/assets/images/logo.png" alt="" />
+                <div class="row">
+                    <div class="input-field col s12">
+                       
+                        <input type="text" [(ngModel)]="currentUser.email" 
+                              class="validate"
+                              id="email"
+                              name="email"
+                            
+                              required #email="ngModel"/>
+                        
+                        <div *ngIf="email.touched && email.invalid" class="alert alert-danger">
+                          <div *ngIf="email.errors.required">Name is required.</div>
+                          <div *ngIf="email.errors.minlength">Name should be 3 character.</div>
+                        </div>
+                        <label for="first_name1">User Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                      <input type="password" [(ngModel)]="currentUser.password" 
+                      class="validate"
+                      id="password"
+                      name="password"
+                    
+                      required #password="ngModel">
+                      
+                      <div *ngIf="password.touched && password.invalid" class="alert alert-danger">
+                        <div *ngIf="password.errors.required">Name is required.</div>
+                        <div *ngIf="password.errors.minlength">Name should be 3 character.</div>
+                      </div>
+                        <label for="last_name">Password</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        
+                        <button type="submit" [disabled]="!loginForm.form.valid" 
+                        class="waves-effect waves-light btn-large btn-log-in">Login</button>
+                    </div>
+                </div>
+                <a href="forgot.html" class="for-pass">Forgot Password?</a>
+            </form>
+      
+

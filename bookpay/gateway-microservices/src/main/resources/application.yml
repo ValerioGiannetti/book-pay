@@ -1,0 +1,142 @@
+# ==============================================================
+# = API GATEWAY Server Auth
+# ==============================================================
+
+spring:
+  application:
+    name: Gateway
+  data:
+    mongodb:
+      database: book_pay_db
+      port: 27017
+      host: localhost  
+server:
+  port: 8765
+  tomcat:
+    max-threads: 5
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+zuul:
+  ribbon:
+    eager-load:
+      enabled: true
+      
+  host:
+    connect-timeout-millis: 120000
+    socket-timeout-millis: 120000
+  stripPrefix: true
+  ignoredServices: '*'
+  routes:
+    registrazione:
+      path: /gateway-registrazione/**
+      serviceId: RegistrazioneBookPayService
+      sensitive-headers: Cookie,Set-Cookie
+    cliente:
+      path: /gateway-clienti/**
+      serviceId: ClienteBookPayService
+      sensitive-headers: Cookie,Set-Cookie
+    esercente:
+      path: /gateway-esercente/**
+      serviceId: EsercenteBookPayService
+      sensitive-headers: Cookie,Set-Cookie  
+    prenotazioni:
+      path: /gateway-prenotazione/**
+      serviceId: PrenotazioneBookPayService
+      sensitive-headers: Cookie,Set-Cookie
+        
+    login:
+      url: http://localhost:8765/api/autorizzazione/
+      sensitive-headers: Cookie,Set-Cookie
+    
+      
+RegistrazioneBookPayService:
+  ribbon:
+   ReadTimeout: 120000
+   ConnectTimeout: 120000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+  # eager-load:
+   # enabled: true  
+ClienteBookPayService:
+  ribbon:
+   ReadTimeout: 120000
+   ConnectTimeout: 120000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+#   eager-load:
+ #   enabled: true
+
+EsercenteBookPayService:
+  ribbon:
+   ReadTimeout: 60000
+   ConnectTimeout: 20000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100 
+   
+PrenotazioneBookPayService:
+  ribbon:
+   ReadTimeout: 60000
+   ConnectTimeout: 20000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+      
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 600000
+            
+            
+    
+# ==============================================================
+# = Logs Parameters
+# ==============================================================        
+logging:
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.security: DEBUG
+
+# ==============================================================
+# = Actuator Parameters
+# ==============================================================
+management:
+  info:
+    git:
+      mode: full
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,routes,filters
+        
+# ==============================================================
+# = Actuator Info
+# ==============================================================
+info:
+  assistenza:
+    nome: "Leonco Assistenza"
+  nome:
+    nome-app: "Leonco Gateway - Versione JWT"    
+            
+            
+# ==============================================================
+# = sicurezza Properties 
+# ==============================================================
+sicurezza:
+    uri: /gateway/auth
+    header: Authorization
+    prefix: Bearer 
+    expiration: 86400
+    secret: leonco_2020

@@ -1,7 +1,6 @@
 package com.bookpay.cloud.business;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -10,14 +9,12 @@ public class Cliente {
 	@Id
 	private String id;
 	private String nome;
-	@Indexed(unique = true)
-	private String email;
-	private String password;
 	private String citta;
 	private String cap; 
 	
 	private String lat;
 	private String longi;
+	private String token;
 	public String getId() {
 		return id;
 	}
@@ -30,18 +27,7 @@ public class Cliente {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 	public String getCitta() {
 		return citta;
 	}
@@ -65,6 +51,12 @@ public class Cliente {
 	}
 	public void setLongi(String longi) {
 		this.longi = longi;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

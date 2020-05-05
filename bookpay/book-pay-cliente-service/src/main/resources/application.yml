@@ -5,7 +5,7 @@ server:
   
 spring:
   application:
-    name: ClienteBookPay
+    name: ClienteBookPayService
   data:
     mongodb:
       database: book_pay_db
