@@ -2,16 +2,18 @@ package com.bookpay.cloud.business;
 
 import java.util.List;
 
+import com.bookpay.cloud.entity.EsercenteEntity;
+
 public interface EsercenteService {
 
 	
-	public Esercente findEsercente(String nome);
+	public EsercenteEntity findEsercente(String nome);
 	
-	public void saveEsercente(Esercente esercente);
+	public void saveEsercente(EsercenteEntity esercente);
 	
-	public List<Esercente>findAll();
+	public List<EsercenteEntity>findAll();
 	
-	public List<Esercente>findByLatAndLong(String lat,String longi);
+	public List<EsercenteEntity>findByLatAndLong(String lat,String longi);
 
 	
 	

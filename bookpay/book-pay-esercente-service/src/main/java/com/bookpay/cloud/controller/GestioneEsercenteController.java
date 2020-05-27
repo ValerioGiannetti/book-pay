@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bookpay.cloud.business.Esercente;
 import com.bookpay.cloud.business.EsercenteService;
+import com.bookpay.cloud.entity.EsercenteEntity;
 
 @RestController
 @RequestMapping(value = "/api/gestione-esercente/")
@@ -26,7 +26,7 @@ public class GestioneEsercenteController {
 	private EsercenteService service;
 	
 	@PostMapping(value = "registra")
-	public ResponseEntity<String>registrazione(@RequestBody Esercente esercente ){
+	public ResponseEntity<String>registrazione(@RequestBody EsercenteEntity esercente ){
 		
 		logger.info("inizio registrazione");
 		String mess = "";
@@ -41,10 +41,10 @@ public class GestioneEsercenteController {
 		return new ResponseEntity<>(mess,HttpStatus.OK);
 	}
 	@GetMapping(value = "lista-esercenti")
-	public ResponseEntity<List<Esercente>> listaEsercenti(){
+	public ResponseEntity<List<EsercenteEntity>> listaEsercenti(){
 		
 		logger.info("inizio listaEsercenti");
-		List<Esercente> lista = null;
+		List<EsercenteEntity> lista = null;
 		try {
 			lista  = service.findAll();	
 		}catch (Exception e) {
@@ -53,7 +53,7 @@ public class GestioneEsercenteController {
 		}
 		
 		logger.info("fine listaEsercenti");
-		return new ResponseEntity<List<Esercente>>(lista,HttpStatus.OK);
+		return new ResponseEntity<List<EsercenteEntity>>(lista,HttpStatus.OK);
 	}
 	
 }
