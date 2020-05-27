@@ -22,6 +22,7 @@ public class ClientiEntity {
 	private String civico;
 	private String citta;
 	private String cap;
+	
 	public Long getIdCliente() {
 		return idCliente;
 	}

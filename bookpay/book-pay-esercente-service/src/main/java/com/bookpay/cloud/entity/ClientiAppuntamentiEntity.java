@@ -5,37 +5,40 @@ import javax.persistence.Entity;
 @Entity
 public class ClientiAppuntamentiEntity {
 
-	private Long fkIdCliente;
-	private Long fkIdEsercente;
-	private Long fkIdEsercenteNegozio;
-	private Long fkIdEsercenteNegozioStaff;
+	private ClientiEntity clientiEntity;
+	private EsercenteEntity esercenteEntity;
+	private EsercenteNegozioEntity esercenteNegozioEntity;
+	private EsercenteStaffEntity esercenteStaffEntity;
 	private String data;
 	private String oraInizio;
 	private String oraFine;
 	private String note;
-	public Long getFkIdCliente() {
-		return fkIdCliente;
+	
+	
+	
+	public ClientiEntity getClientiEntity() {
+		return clientiEntity;
 	}
-	public void setFkIdCliente(Long fkIdCliente) {
-		this.fkIdCliente = fkIdCliente;
+	public void setClientiEntity(ClientiEntity clientiEntity) {
+		this.clientiEntity = clientiEntity;
 	}
-	public Long getFkIdEsercente() {
-		return fkIdEsercente;
+	public EsercenteEntity getEsercenteEntity() {
+		return esercenteEntity;
 	}
-	public void setFkIdEsercente(Long fkIdEsercente) {
-		this.fkIdEsercente = fkIdEsercente;
+	public void setEsercenteEntity(EsercenteEntity esercenteEntity) {
+		this.esercenteEntity = esercenteEntity;
 	}
-	public Long getFkIdEsercenteNegozio() {
-		return fkIdEsercenteNegozio;
+	public EsercenteNegozioEntity getEsercenteNegozioEntity() {
+		return esercenteNegozioEntity;
 	}
-	public void setFkIdEsercenteNegozio(Long fkIdEsercenteNegozio) {
-		this.fkIdEsercenteNegozio = fkIdEsercenteNegozio;
+	public void setEsercenteNegozioEntity(EsercenteNegozioEntity esercenteNegozioEntity) {
+		this.esercenteNegozioEntity = esercenteNegozioEntity;
 	}
-	public Long getFkIdEsercenteNegozioStaff() {
-		return fkIdEsercenteNegozioStaff;
+	public EsercenteStaffEntity getEsercenteStaffEntity() {
+		return esercenteStaffEntity;
 	}
-	public void setFkIdEsercenteNegozioStaff(Long fkIdEsercenteNegozioStaff) {
-		this.fkIdEsercenteNegozioStaff = fkIdEsercenteNegozioStaff;
+	public void setEsercenteStaffEntity(EsercenteStaffEntity esercenteStaffEntity) {
+		this.esercenteStaffEntity = esercenteStaffEntity;
 	}
 	public String getData() {
 		return data;
