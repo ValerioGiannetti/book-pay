@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bookpay.cloud.entity.EsercenteEntity;
+import com.bookpay.cloud.repository.EsercenteRepository;
+
 @Service
 @Transactional
 public class EsercenteServiceImpl implements EsercenteService{
@@ -18,16 +21,16 @@ public class EsercenteServiceImpl implements EsercenteService{
 	private EsercenteRepository repository;
 
 	@Override
-	public Esercente findEsercente(String nome) {
+	public EsercenteEntity findEsercente(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void saveEsercente(Esercente esercente) {
+	public void saveEsercente(EsercenteEntity esercente) {
 		logger.info("inizio saveEsercente");
 		try {
-			repository.insert(esercente);
+			repository.save(esercente);
 		}catch (Exception e) {
 			logger.info("errore saveEsercente");
 			throw e;
@@ -36,11 +39,11 @@ public class EsercenteServiceImpl implements EsercenteService{
 	}
 
 	@Override
-	public List<Esercente> findAll() {
+	public List<EsercenteEntity> findAll() {
 		logger.info("inizio findAll");
-		List<Esercente>listaEser = null;
+		List<EsercenteEntity>listaEser = null;
 		try {
-			listaEser = repository.findAll();
+			listaEser = (List<EsercenteEntity>) repository.findAll();
 		}catch (Exception e) {
 			logger.info("errore findAll");
 			throw e;
@@ -50,7 +53,7 @@ public class EsercenteServiceImpl implements EsercenteService{
 	}
 
 	@Override
-	public List<Esercente> findByLatAndLong(String lat, String longi) {
+	public List<EsercenteEntity> findByLatAndLong(String lat, String longi) {
 		// TODO Auto-generated method stub
 		return null;
 	}
