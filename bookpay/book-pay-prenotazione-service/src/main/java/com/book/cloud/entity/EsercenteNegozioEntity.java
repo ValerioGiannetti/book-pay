@@ -1,4 +1,4 @@
-package com.bookpay.cloud.entity;
+package com.book.cloud.entity;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

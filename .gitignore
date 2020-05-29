@@ -14,3 +14,6 @@ Book-Pay-Android/local.properties
 Book-Pay-Android/.idea/
 Book-Pay-Android/app/build/
 Book-Pay-Android/app/app.iml
+bookpay/book-pay-prenotazione-service/mvnw
+bookpay/book-pay-prenotazione-service/mvnw.cmd
+bookpay/book-pay-prenotazione-service/.mvn/
