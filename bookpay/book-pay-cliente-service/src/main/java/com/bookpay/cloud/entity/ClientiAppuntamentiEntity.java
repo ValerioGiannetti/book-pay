@@ -1,41 +1,59 @@
 package com.bookpay.cloud.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "d_clienti_appuntamenti")
 public class ClientiAppuntamentiEntity {
-
-	private Long fkIdCliente;
-	private Long fkIdEsercente;
-	private Long fkIdEsercenteNegozio;
-	private Long fkIdEsercenteNegozioStaff;
+	
+	@ManyToOne
+	@JoinColumn(name = "idCliente")
+	private ClientiEntity clientiEntity;
+	@ManyToOne
+	@JoinColumn(name = "idEsercente")
+	private EsercenteEntity esercenteEntity;
+	@ManyToOne(targetEntity = EsercenteNegozioEntity.class)
+	@JoinColumn(name = "idEsercenteNegozio")
+	private EsercenteNegozioEntity esercenteNegozioEntity;
+	@ManyToOne(targetEntity = EsercenteStaffEntity.class)
+	@JoinColumn(name = "idEsercenteNegozioStaff")
+	private EsercenteStaffEntity esercenteStaffEntity;
+	
 	private String data;
 	private String oraInizio;
 	private String oraFine;
 	private String note;
-	public Long getFkIdCliente() {
-		return fkIdCliente;
+	
+	
+	
+	public ClientiEntity getClientiEntity() {
+		return clientiEntity;
 	}
-	public void setFkIdCliente(Long fkIdCliente) {
-		this.fkIdCliente = fkIdCliente;
+	public void setClientiEntity(ClientiEntity clientiEntity) {
+		this.clientiEntity = clientiEntity;
 	}
-	public Long getFkIdEsercente() {
-		return fkIdEsercente;
+	public EsercenteEntity getEsercenteEntity() {
+		return esercenteEntity;
 	}
-	public void setFkIdEsercente(Long fkIdEsercente) {
-		this.fkIdEsercente = fkIdEsercente;
+	public void setEsercenteEntity(EsercenteEntity esercenteEntity) {
+		this.esercenteEntity = esercenteEntity;
 	}
-	public Long getFkIdEsercenteNegozio() {
-		return fkIdEsercenteNegozio;
+	public EsercenteNegozioEntity getEsercenteNegozioEntity() {
+		return esercenteNegozioEntity;
 	}
-	public void setFkIdEsercenteNegozio(Long fkIdEsercenteNegozio) {
-		this.fkIdEsercenteNegozio = fkIdEsercenteNegozio;
+	public void setEsercenteNegozioEntity(EsercenteNegozioEntity esercenteNegozioEntity) {
+		this.esercenteNegozioEntity = esercenteNegozioEntity;
 	}
-	public Long getFkIdEsercenteNegozioStaff() {
-		return fkIdEsercenteNegozioStaff;
+	public EsercenteStaffEntity getEsercenteStaffEntity() {
+		return esercenteStaffEntity;
 	}
-	public void setFkIdEsercenteNegozioStaff(Long fkIdEsercenteNegozioStaff) {
-		this.fkIdEsercenteNegozioStaff = fkIdEsercenteNegozioStaff;
+	public void setEsercenteStaffEntity(EsercenteStaffEntity esercenteStaffEntity) {
+		this.esercenteStaffEntity = esercenteStaffEntity;
 	}
 	public String getData() {
 		return data;

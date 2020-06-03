@@ -1,11 +1,25 @@
 package com.bookpay.cloud.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "d_clienti_recensioni")
 public class ClientiRecensioniEntity {
 
-	
+	@ManyToOne
+	@JoinColumn(name = "idCliente")
 	private ClientiEntity clientiEntity;
+	@ManyToOne
+	@JoinColumn(name = "idEsercente")
 	private EsercenteEntity esercenteEntity;
+	@ManyToOne
+	@JoinColumn(name = "idEsercenteNegozio")
 	private EsercenteNegozioEntity esercenteNegozioEntity;
+	@Id
 	private String data;
 	private String punteggio;
 	

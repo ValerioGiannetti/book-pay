@@ -1,32 +1,29 @@
 package com.book.pay.app.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.DialogFragment;
-
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
 import com.book.pay.app.R;
+import com.book.pay.app.api.PrenotazioneApi;
+import com.book.pay.app.api.PrenotazioneApiClient;
+import com.book.pay.app.dto.DatiPrenotazioneDto;
 import com.book.pay.app.fragment.NavigationDrawerFragment;
 import com.book.pay.app.fragment.TimePickerDialogFragment;
 import com.book.pay.app.model.Esercente;
@@ -34,11 +31,14 @@ import com.book.pay.app.notification.BookBroadCastReceiver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private PrenotazioneApi prenotazioneApi;
     private  CalendarView calendarView;
     private int anno;
     private int mese = 1; // metto uno perchè il mese del calendar parte da 0;
@@ -46,19 +46,26 @@ public class DetailActivity extends AppCompatActivity {
     private int ora = 0;
     private int minuti = 0;
 
+    private Esercente esercente;
+
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
     private final static String default_notification_channel_id = "default" ;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
         Bundle extra = getIntent().getExtras();
-        Esercente esercente = extra.getParcelable("esercente");
+        esercente = extra.getParcelable("esercente");
         TextView nomeAtt = findViewById(R.id.detail_nome_att);
         TextView nomeEse = findViewById(R.id.detail_nome_ese);
+        if(!esercente.getListaNegozi().isEmpty()){
+            nomeAtt.setText(esercente.getListaNegozi().get(0).getNumeNegozio());
+        }
 
-        nomeAtt.setText(esercente.getListaNegozi().get(0).getNumeNegozio());
         nomeEse.setText(esercente.getNome());
 
         calendarView = findViewById(R.id.calendarEsercente);
@@ -91,8 +98,39 @@ public class DetailActivity extends AppCompatActivity {
                 if(giorniRimanenti > 1){
                     giornoText = "giorni";
                 }
+
+                DatiPrenotazioneDto dto = new DatiPrenotazioneDto();
+                dto.setIdEsercente(String.valueOf(esercente.getIdEsercente()));
+                dto.setMinuti(minuti);
+                dto.setOra(ora);
+                dto.setDataAppuntamento(mese+"/"+giornoPrenotazione+"/"+anno);
+
+                PrenotazioneApiClient apiClient = new PrenotazioneApiClient();
+                prenotazioneApi = apiClient.getClient().create(PrenotazioneApi.class);
+                prenotazioneApi.inviaPrenotazione(dto).enqueue(new Callback<Boolean>() {
+                    @Override
+                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                        if(response.body()){
+
+                            scheduleNotification(getNotification( "Tra " +minuti+" è il tuo turno" ) , 10000 ) ;
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<Boolean> call, Throwable t) {
+                        Toast.makeText(getBaseContext(), "Return" + t.toString(), Toast.LENGTH_LONG).show();
+                        Log.d("RITORNO", t.toString());
+                    }
+                });
+
+
+
+
+
+
                 Toast.makeText(getApplicationContext(),"Tra  "+giorniRimanenti+" "+giornoText+" sarà il tuo turno",Toast.LENGTH_LONG).show();
-                scheduleNotification(getNotification( "Tra " +minuti+" è il tuo turno" ) , 10000 ) ;
+
             }
         });
 
@@ -125,10 +163,11 @@ public class DetailActivity extends AppCompatActivity {
     }
     private Notification getNotification (String content) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id ) ;
-        builder.setContentTitle( "Scheduled Notification" ) ;
+        builder.setContentTitle("Appuntamento") ;
         builder.setContentText(content) ;
         builder.setSmallIcon(R.drawable.ic_launcher_foreground ) ;
         builder.setAutoCancel( true ) ;
+        builder.setStyle(new NotificationCompat.BigPictureStyle());
         //Vibration
         builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
 

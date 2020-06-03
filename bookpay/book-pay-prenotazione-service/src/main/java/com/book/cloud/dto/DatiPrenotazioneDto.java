@@ -5,6 +5,8 @@ public class DatiPrenotazioneDto {
 	private String idEsercente;
 	private String idEsercenteNegozio;
 	private String idStaffNegozio;
+	private String idCliente;
+	
 	
 	private int minuti;
 	private int ora;
@@ -52,6 +54,12 @@ public class DatiPrenotazioneDto {
 	}
 	public void setNote(String note) {
 		this.note = note;
+	}
+	public String getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(String idCliente) {
+		this.idCliente = idCliente;
 	}
 	
 	

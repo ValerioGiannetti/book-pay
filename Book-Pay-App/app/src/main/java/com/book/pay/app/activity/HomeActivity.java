@@ -41,17 +41,17 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    private class LocationAsynTask extends AsyncTask<LocationUtil,Integer, Coordinate> {
+    private class LocationAsynTask extends AsyncTask<LocationUtil,Integer, Esercente> {
 
         private Integer count = 0;
         @Override
-        protected Coordinate doInBackground(LocationUtil... locationUtils) {
+        protected Esercente doInBackground(LocationUtil... locationUtils) {
             Coordinate coordinate = new Coordinate();
             while(coordinate.getLatitudine() == null){
 
                 locationUtils[0].getLocationTask(coordinate);
                 if(coordinate.getLatitudine() != null && coordinate.getLongitudine() != null){
-                    return coordinate;
+                    return null;
                 }else{
                     count++;
                     publishProgress(count);
@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
 
-            return coordinate;
+            return null;
         }
 
         @Override
@@ -76,12 +76,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Coordinate coordinate) {
-            super.onPostExecute(coordinate);
+        protected void onPostExecute(Esercente esercente) {
+            super.onPostExecute(esercente);
 
             //SharedPreferences preferences = getSharedPreferences(PREFS_, MODE_PRIVATE);
 
-            setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_home);
 
             RecyclerView rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
             rvEsercente.setHasFixedSize(true);
@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
             });
 
             Toast.makeText(getApplicationContext(),
-                    "LATITUDE :" + coordinate.getLatitudine() + " LONGITUDE :" + coordinate.getLongitudine(),
+                    "Risultato",
                     Toast.LENGTH_LONG).show();
 
         }

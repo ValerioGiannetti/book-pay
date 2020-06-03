@@ -1,88 +1,180 @@
 package com.book.pay.app;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.book.pay.app.adapter.EsercenteAdapter;
+import com.book.pay.app.api.EsercenteApi;
+import com.book.pay.app.api.EsercenteApiClient;
 import com.book.pay.app.fragment.NavigationDrawerFragment;
 import com.book.pay.app.model.Esercente;
 import com.book.pay.app.util.Coordinate;
 import com.book.pay.app.util.LocationUtil;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.Collections;
 import java.util.List;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity  {
+//import androidx.navigation.NavController;
+//import androidx.navigation.NavDestination;
 
-    private List<Esercente>lista;
+public class MainActivity extends AppCompatActivity {
+
+    private List<Esercente> lista;
     private ProgressBar progressBar;
+    private RecyclerView rvEsercente;
+    private EsercenteApi api;
+    private LocationUtil locationUtil;
+    private Coordinate coordinateInstance;
+    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Attiva Localizzazione")
+                        .setMessage("Per poter utilizzare l'app bisogna attivare la localizzazione")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LocationAsynTask locationAsynTask = new LocationAsynTask();
-        LocationUtil locationUtil = new LocationUtil(this);
-        locationAsynTask.execute(locationUtil);
+            checkLocationPermission();
+
+            LocationAsynTask locationAsynTask = new LocationAsynTask();
+            locationUtil = new LocationUtil(this);
+            locationAsynTask.execute(locationUtil);
 
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
+        setContentView(R.layout.activity_main);
+
+        if(locationUtil != null && locationUtil.getCoordinate() != null){
+            SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(),Context.MODE_PRIVATE);
+            preferences.edit().putString("Latitudine",locationUtil.getCoordinate().getLatitudine());
+
+            rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
+            rvEsercente.setHasFixedSize(true);
+        }
+
+
+        if ((this.lista == null || this.lista.isEmpty()) && this.locationUtil.lastLocation(coordinateInstance)) {
+            EsercenteApiClient esercenteApiClient = new EsercenteApiClient();
+            api = esercenteApiClient.getClient().create(EsercenteApi.class);
+            api.esercenteAllList().enqueue(new Callback<List<Esercente>>() {
+                @Override
+                public void onResponse(Call<List<Esercente>> call, Response<List<Esercente>> response) {
+                    lista = response.body();
+                    EsercenteAdapter adapter = new EsercenteAdapter(getApplicationContext(), lista);
+                    rvEsercente.setAdapter(adapter);
+                    rvEsercente.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                    LinearLayout layout = findViewById(R.id.bottom_app_bar_content_container);
+
+                    layout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+                            navigationDrawerFragment.show(getSupportFragmentManager(), "TAG");
+                        }
+                    });
+
+                    //        Toast.makeText(getApplicationContext(),"RISULTATO:",Toast.LENGTH_LONG).show();
+
+                }
+
+                @Override
+                public void onFailure(Call<List<Esercente>> call, Throwable t) {
+                    Toast.makeText(getBaseContext(), "Return" + t.toString(), Toast.LENGTH_LONG).show();
+                    Log.d("RITORNO", t.toString());
+
+                }
+            });
+        }
+
     }
 
-    private class LocationAsynTask extends AsyncTask<LocationUtil,Integer, Coordinate> {
+    private class LocationAsynTask extends AsyncTask<LocationUtil, Integer, Coordinate> {
 
         private Integer count = 0;
-        @Override
-        protected Coordinate doInBackground(LocationUtil... locationUtils) {
-            Coordinate coordinate = new Coordinate();
-            while(coordinate.getLatitudine() == null){
 
-                if(locationUtils[0].getLocationTask(coordinate)){
-                    if(coordinate.getLatitudine() != null && coordinate.getLongitudine() != null){
+        @Override
+        protected Coordinate doInBackground(final LocationUtil... locationUtils) {
+            Coordinate coordinate = new Coordinate();
+
+            while (coordinate.getLatitudine() == null) {
+
+                if (locationUtils[0].getLocationTask(coordinate)) {
+                    if (coordinate.getLatitudine() != null && coordinate.getLongitudine() != null) {
                         return coordinate;
-                    }else{
+                    } else {
                         count++;
                         publishProgress(count);
                     }
                 }
 
-
             }
-
             return coordinate;
         }
 
@@ -102,34 +194,62 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(Coordinate coordinate) {
             super.onPostExecute(coordinate);
+            progressBar.stopNestedScroll();
 
-            setContentView(R.layout.activity_main);
+            //TODO implementare chiamata per ricerca esercente;
 
-            RecyclerView rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
-            rvEsercente.setHasFixedSize(true);
-            if(coordinate != null){
+                setContentView(R.layout.activity_main);
 
-                lista = Esercente.creaLista(20);
-
+                rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
+                rvEsercente.setHasFixedSize(true);
 
 
-                EsercenteAdapter adapter = new EsercenteAdapter(getApplicationContext(),lista);
-                rvEsercente.setAdapter(adapter);
-                rvEsercente.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-                LinearLayout layout = findViewById(R.id.bottom_app_bar_content_container);
-
-                layout.setOnClickListener(new View.OnClickListener() {
+            if (lista == null || lista.isEmpty()) {
+                EsercenteApiClient esercenteApiClient = new EsercenteApiClient();
+                api = esercenteApiClient.getClient().create(EsercenteApi.class);
+                api.esercenteAllList().enqueue(new Callback<List<Esercente>>() {
                     @Override
-                    public void onClick(View v) {
-                        NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
-                        navigationDrawerFragment.show(getSupportFragmentManager(),"TAG");
+                    public void onResponse(Call<List<Esercente>> call, Response<List<Esercente>> response) {
+                        lista = response.body();
+                        EsercenteAdapter adapter = new EsercenteAdapter(getApplicationContext(), lista);
+                        rvEsercente.setAdapter(adapter);
+                        rvEsercente.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                        LinearLayout layout = findViewById(R.id.bottom_app_bar_content_container);
+
+                        layout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+                                navigationDrawerFragment.show(getSupportFragmentManager(), "TAG");
+                            }
+                        });
+
+                        //        Toast.makeText(getApplicationContext(),"RISULTATO:",Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Esercente>> call, Throwable t) {
+                        Toast.makeText(getBaseContext(), "Return" + t.toString(), Toast.LENGTH_LONG).show();
+                        Log.d("RITORNO", t.toString());
+
                     }
                 });
+            }
 
-                Toast.makeText(getApplicationContext(),
-                        "LATITUDE :" + coordinate.getLatitudine() + " LONGITUDE :" + coordinate.getLongitudine(),
-                        Toast.LENGTH_LONG).show();
+
+
+
+
+          //  setContentView(R.layout.activity_main);
+          //  rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
+          //  rvEsercente.setHasFixedSize(true);
+
+            if (coordinate != null) {
+                coordinateInstance = coordinate;
+                //lista = Esercente.creaLista(20);
 
             }
 

@@ -3,21 +3,34 @@ package com.book.pay.app.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Esercente implements Parcelable {
 
+    @SerializedName("idEsercente")
     private int idEsercente;
+    @SerializedName("nome")
     private String nome;
+    @SerializedName("cognome")
     private String cognome;
+    @SerializedName("dataNascita")
     private String dataNascita;
+    @SerializedName("email")
     private String email;
+    @SerializedName("telefono")
     private String telefono;
+    @SerializedName("indirizzo")
     private String indirizzo;
+    @SerializedName("civico")
     private String civico;
+    @SerializedName("cap")
     private String cap;
+    @SerializedName("citta")
     private String citta;
+    @SerializedName("listaNegozi")
     private List<NegoziEsercente>listaNegozi;
 
     public Esercente(){}

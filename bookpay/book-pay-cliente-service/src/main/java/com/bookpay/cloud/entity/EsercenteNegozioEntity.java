@@ -1,10 +1,27 @@
 package com.bookpay.cloud.entity;
 
-public class EsercenteNegozioEntity {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-	private int fkIdEsercente;
-    private String idEsercenteNegozio;
-    private String numeNegozio;
+@Entity
+@Table(name = "d_esercente_negozio")
+public class EsercenteNegozioEntity {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long idEsercenteNegozio;
+    
+	@ManyToOne
+	@JoinColumn(name = "idEsercente", nullable = false)
+	private EsercenteEntity esercenteEntity;
+	
+	private String nomeNegozio;
     private String email;
     private String telefono;
     private String indirizzo;
@@ -14,24 +31,7 @@ public class EsercenteNegozioEntity {
     private String latitudine;
     private String longitudine;
 	
-    public int getFkIdEsercente() {
-		return fkIdEsercente;
-	}
-	public void setFkIdEsercente(int fkIdEsercente) {
-		this.fkIdEsercente = fkIdEsercente;
-	}
-	public String getIdEsercenteNegozio() {
-		return idEsercenteNegozio;
-	}
-	public void setIdEsercenteNegozio(String idEsercenteNegozio) {
-		this.idEsercenteNegozio = idEsercenteNegozio;
-	}
-	public String getNumeNegozio() {
-		return numeNegozio;
-	}
-	public void setNumeNegozio(String numeNegozio) {
-		this.numeNegozio = numeNegozio;
-	}
+   
 	public String getEmail() {
 		return email;
 	}
@@ -79,6 +79,24 @@ public class EsercenteNegozioEntity {
 	}
 	public void setLongitudine(String longitudine) {
 		this.longitudine = longitudine;
+	}
+	public EsercenteEntity getEsercenteEntity() {
+		return esercenteEntity;
+	}
+	public void setEsercenteEntity(EsercenteEntity esercenteEntity) {
+		this.esercenteEntity = esercenteEntity;
+	}
+	public Long getIdEsercenteNegozio() {
+		return idEsercenteNegozio;
+	}
+	public void setIdEsercenteNegozio(Long idEsercenteNegozio) {
+		this.idEsercenteNegozio = idEsercenteNegozio;
+	}
+	public String getNomeNegozio() {
+		return nomeNegozio;
+	}
+	public void setNomeNegozio(String nomeNegozio) {
+		this.nomeNegozio = nomeNegozio;
 	}
     
     

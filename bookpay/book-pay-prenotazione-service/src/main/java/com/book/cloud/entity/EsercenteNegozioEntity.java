@@ -1,22 +1,30 @@
 package com.book.cloud.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "d_esercente_negozio")
 public class EsercenteNegozioEntity {
 	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_esercente_negozio")
 	private Long idEsercenteNegozio;
     
+	
+	@JoinColumn(name = "fk_id_esercente", nullable = false)
 	@ManyToOne
-	@JoinColumn(name = "idEsercente", nullable = false)
 	private EsercenteEntity esercenteEntity;
 	
+	@Column(name = "nome_negozio")
 	private String nomeNegozio;
     private String email;
     private String telefono;

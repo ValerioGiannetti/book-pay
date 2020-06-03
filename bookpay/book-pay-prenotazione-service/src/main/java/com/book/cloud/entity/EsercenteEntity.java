@@ -3,21 +3,28 @@ package com.book.cloud.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.apache.commons.lang.StringUtils;
 
 @Entity
+@Table(name = "d_esercente")
 public class EsercenteEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_esercente")
 	private Long idEsercente;
     private String nome;
     private String cognome;
+    @Column(name = "data_nascita")
     private String dataNascita;
     
     private String email;
@@ -27,7 +34,7 @@ public class EsercenteEntity {
     private String cap;
     private String citta;
     
-    @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY,mappedBy = "esercenteEntity")
+    @OneToMany(mappedBy = "esercenteEntity",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private List<EsercenteNegozioEntity>listaNegozi;
 	
     public Long getIdEsercente() {
@@ -97,5 +104,19 @@ public class EsercenteEntity {
 		this.listaNegozi = listaNegozi;
 	}
     
+	
+	public EsercenteNegozioEntity getNegozio(String idNegozio) {
+		if(StringUtils.isNotEmpty(idNegozio)) {
+			for (EsercenteNegozioEntity esercenteNegozioEntity : this.getListaNegozi()) {
+				if(esercenteNegozioEntity.getIdEsercenteNegozio().equals(Long.valueOf(idNegozio))) {
+					return esercenteNegozioEntity;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	
     
 }

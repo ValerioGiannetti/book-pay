@@ -4,14 +4,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "d_esercente_negozio_staff")
 public class EsercenteStaffEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idEsercenteNegozioStaff;
+	@ManyToOne
+	@JoinColumn(name = "idEsercente")
 	private EsercenteEntity esercenteEntity;
+	@ManyToOne
+	@JoinColumn(name = "idEsercenteNegozio")
 	private EsercenteNegozioEntity esercenteNegozioEntity;
 	
 	private String nome;

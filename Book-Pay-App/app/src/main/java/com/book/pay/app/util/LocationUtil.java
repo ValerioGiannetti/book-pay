@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +29,15 @@ public class LocationUtil {
     private LocationManager locationManager;
     private LocationRequest locationRequest;
     private AppCompatActivity activity;
+
     private Coordinate coordinate;
+    private Location location;
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+
 
     public LocationUtil(AppCompatActivity activity) {
 
@@ -41,46 +50,52 @@ public class LocationUtil {
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
     }
 
-//TODO da completare
+    //TODO da completare
     public boolean getLocationTask(final Coordinate coordinate) {
-
 
 
         if (ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return false;
         }
-        Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-            mFusedLocationClient.getLastLocation().addOnCompleteListener(
-                    new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
 
-                            Location location = task.getResult();
-                            if (location == null) {
-                                requestNewLocationData();
+        location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(
+                new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
 
-                            } else {
-                                coordinate.setLatitudine(String.valueOf(location.getLatitude()));
-                                coordinate.setLongitudine(String.valueOf(location.getLongitude()));
-                            }
+                        Location location = task.getResult();
+                        if (location == null) {
+                            requestNewLocationData();
+
+                        } else {
+                            Log.d("TAG LOCATION UTIL","Coordinate acquisite "+coordinate.getLatitudine() +
+                                    " "+coordinate.getLongitudine() );
+                            coordinate.setLatitudine(String.valueOf(location.getLatitude()));
+                            coordinate.setLongitudine(String.valueOf(location.getLongitude()));
                         }
-
                     }
-            );
-            return true;
-        }
 
+                }
+        );
+        return true;
+    }
 
+    public boolean lastLocation(Coordinate coordinate) {
+       if(coordinate == null){
+           return false;
+       }
+       Double latitudine = Double.valueOf(coordinate.getLatitudine());
+       Double longitudine = Double.valueOf(coordinate.getLongitudine());
+       if(latitudine.equals(location.getLatitude()) && longitudine.equals(location.getLongitude())){
+           return false;
+       }
+        return true;
+    }
 
 
     @SuppressLint("MissingPermission")

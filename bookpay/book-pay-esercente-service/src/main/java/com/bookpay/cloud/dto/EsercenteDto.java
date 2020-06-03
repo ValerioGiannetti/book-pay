@@ -1,47 +1,24 @@
-package com.bookpay.cloud.entity;
+package com.bookpay.cloud.dto;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.bookpay.cloud.entity.EsercenteNegozioEntity;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+@JsonDeserialize
+public class EsercenteDto {
 
-@Entity
-@Table(name = "d_esercente")
-public class EsercenteEntity {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_esercente")
 	private Long idEsercente;
-	@Column(name = "nome")
 	private String nome;
-	@Column(name = "cognome")
 	private String cognome;
-    @Column(name = "data_nascita")
     private String dataNascita;
-    
-    @Column(name = "email")
     private String email;
-    @Column(name = "telefono")
     private String telefono;
-    @Column(name = "indirizzo")
     private String indirizzo;
-    @Column(name = "civico")
     private String civico;
-    @Column(name = "cap")
     private String cap;
-    @Column(name = "citta")
     private String citta;
-    
-    @OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY,mappedBy = "esercenteEntity")
-    private List<EsercenteNegozioEntity>listaNegozi;
+    private List<NegozioEsercenteDto>listaNegozi;
 	
     public Long getIdEsercente() {
 		return idEsercente;
@@ -103,12 +80,15 @@ public class EsercenteEntity {
 	public void setCitta(String citta) {
 		this.citta = citta;
 	}
-	public List<EsercenteNegozioEntity> getListaNegozi() {
+	public List<NegozioEsercenteDto> getListaNegozi() {
 		return listaNegozi;
 	}
-	public void setListaNegozi(List<EsercenteNegozioEntity> listaNegozi) {
+	public void setListaNegozi(List<NegozioEsercenteDto> listaNegozi) {
 		this.listaNegozi = listaNegozi;
 	}
+    
+    
+    
     
     
 }

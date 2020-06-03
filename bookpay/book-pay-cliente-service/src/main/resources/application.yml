@@ -13,7 +13,7 @@ spring:
      # host: localhost
   datasource:
     url: jdbc:mysql://localhost:3306/book_pay_db
-    username: root  jpa:    hibernate:      ddl-auto: update
+    username: root  jpa:    hibernate:      ddl-auto: none
 
 eureka:
   client:

@@ -4,15 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-
+@Table(name = "d_clienti")
 public class ClientiEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idCliente;
-	
 	private String nome;
 	private String cognome;
 	private String dataNascita;
@@ -22,6 +22,7 @@ public class ClientiEntity {
 	private String civico;
 	private String citta;
 	private String cap;
+	
 	public Long getIdCliente() {
 		return idCliente;
 	}

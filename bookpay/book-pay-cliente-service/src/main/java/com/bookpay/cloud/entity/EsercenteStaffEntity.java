@@ -1,30 +1,47 @@
 package com.bookpay.cloud.entity;
 
-public class EsercenteStaffEntity {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-	private int fkIdEsercente;
-	private int fkIdEsercenteNegozio;
-	private int idEsercenteNegozioStaff;
+@Entity
+@Table(name = "d_esercente_negozio_staff")
+public class EsercenteStaffEntity {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long idEsercenteNegozioStaff;
+	@ManyToOne
+	@JoinColumn(name = "idEsercente")
+	private EsercenteEntity esercenteEntity;
+	@ManyToOne
+	@JoinColumn(name = "idEsercenteNegozio")
+	private EsercenteNegozioEntity esercenteNegozioEntity;
+	
 	private String nome;
 	private String cognome;
 	private String numeroAppuntamentiOra;
 	
-	public int getFkIdEsercente() {
-		return fkIdEsercente;
+	public EsercenteEntity getEsercenteEntity() {
+		return esercenteEntity;
 	}
-	public void setFkIdEsercente(int fkIdEsercente) {
-		this.fkIdEsercente = fkIdEsercente;
+	public void setEsercenteEntity(EsercenteEntity esercenteEntity) {
+		this.esercenteEntity = esercenteEntity;
 	}
-	public int getFkIdEsercenteNegozio() {
-		return fkIdEsercenteNegozio;
+	public EsercenteNegozioEntity getEsercenteNegozioEntity() {
+		return esercenteNegozioEntity;
 	}
-	public void setFkIdEsercenteNegozio(int fkIdEsercenteNegozio) {
-		this.fkIdEsercenteNegozio = fkIdEsercenteNegozio;
+	public void setEsercenteNegozioEntity(EsercenteNegozioEntity esercenteNegozioEntity) {
+		this.esercenteNegozioEntity = esercenteNegozioEntity;
 	}
-	public int getIdEsercenteNegozioStaff() {
+	public Long getIdEsercenteNegozioStaff() {
 		return idEsercenteNegozioStaff;
 	}
-	public void setIdEsercenteNegozioStaff(int idEsercenteNegozioStaff) {
+	public void setIdEsercenteNegozioStaff(Long idEsercenteNegozioStaff) {
 		this.idEsercenteNegozioStaff = idEsercenteNegozioStaff;
 	}
 	public String getNome() {
@@ -47,5 +64,6 @@ public class EsercenteStaffEntity {
 	}
 	
 	
-
+	
+	
 }

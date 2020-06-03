@@ -46,7 +46,10 @@ public class EsercenteAdapter extends RecyclerView.Adapter<ViewEsercente> {
 
         Esercente contact = lista.get(position);
         holder.getAttesa_text_view().setText(contact.getTempoAttesa());
-        holder.getEsercente_attivita().setText(contact.getListaNegozi().get(0).getNumeNegozio());
+        if(!contact.getListaNegozi().isEmpty()){
+            holder.getEsercente_attivita().setText(contact.getListaNegozi().get(0).getNumeNegozio());
+        }
+
         holder.setCardId(position);
         holder.getEsercente_attivita().setText(contact.getNome());
         //holder.getEsercente_nome().setText(contact.getNomeEsercente());

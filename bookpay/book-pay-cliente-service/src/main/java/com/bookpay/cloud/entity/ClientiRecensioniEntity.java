@@ -1,31 +1,46 @@
 package com.bookpay.cloud.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "d_clienti_recensioni")
 public class ClientiRecensioniEntity {
 
-	
-	private Long fkIdCliente;
-	private Long fkIdEsercente;
-	private Long fkEsercenteNegozio;
+	@ManyToOne
+	@JoinColumn(name = "idCliente")
+	private ClientiEntity clientiEntity;
+	@ManyToOne
+	@JoinColumn(name = "idEsercente")
+	private EsercenteEntity esercenteEntity;
+	@ManyToOne
+	@JoinColumn(name = "idEsercenteNegozio")
+	private EsercenteNegozioEntity esercenteNegozioEntity;
+	@Id
 	private String data;
 	private String punteggio;
-
-	public Long getFkIdCliente() {
-		return fkIdCliente;
+	
+	
+	public ClientiEntity getClientiEntity() {
+		return clientiEntity;
 	}
-	public void setFkIdCliente(Long fkIdCliente) {
-		this.fkIdCliente = fkIdCliente;
+	public void setClientiEntity(ClientiEntity clientiEntity) {
+		this.clientiEntity = clientiEntity;
 	}
-	public Long getFkIdEsercente() {
-		return fkIdEsercente;
+	public EsercenteEntity getEsercenteEntity() {
+		return esercenteEntity;
 	}
-	public void setFkIdEsercente(Long fkIdEsercente) {
-		this.fkIdEsercente = fkIdEsercente;
+	public void setEsercenteEntity(EsercenteEntity esercenteEntity) {
+		this.esercenteEntity = esercenteEntity;
 	}
-	public Long getFkEsercenteNegozio() {
-		return fkEsercenteNegozio;
+	public EsercenteNegozioEntity getEsercenteNegozioEntity() {
+		return esercenteNegozioEntity;
 	}
-	public void setFkEsercenteNegozio(Long fkEsercenteNegozio) {
-		this.fkEsercenteNegozio = fkEsercenteNegozio;
+	public void setEsercenteNegozioEntity(EsercenteNegozioEntity esercenteNegozioEntity) {
+		this.esercenteNegozioEntity = esercenteNegozioEntity;
 	}
 	public String getData() {
 		return data;
