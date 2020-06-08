@@ -1,0 +1,139 @@
+
+# ==============================================================
+# = API GATEWAY Server Auth
+# ==============================================================
+
+spring:
+  application:
+    name: GatewayService
+ # data:
+  #  mongodb:
+   #   database: book_pay_db
+    #  port: 27017
+     # host: localhost
+  datasource:
+    url: jdbc:mysql://localhost:3306/book_pay_db
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true  
+server:
+  port: 8765
+  tomcat:
+    max-threads: 5
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+zuul:
+  ribbon:
+    eager-load:
+      enabled: true
+      
+  host:
+    connect-timeout-millis: 120000
+    socket-timeout-millis: 120000
+  stripPrefix: true
+  ignoredServices: '*'
+  routes:
+    esercente:
+      path: /gateway-esercente/**
+      serviceId: EsercenteBookPay
+      sensitive-headers: Cookie,Set-Cookie
+    cliente:
+      path: /gateway-cliente/**
+      serviceId: ClienteBookPay
+      sensitive-headers: Cookie,Set-Cookie
+    prenotazione:
+      path: /gateway-prenotazione/**
+      serviceId: PrenotazioneBookPay
+      sensitive-headers: Cookie,Set-Cookie  
+        
+    login:
+      url: http://localhost:8765/api/autorizzazione/
+      sensitive-headers: Cookie,Set-Cookie
+    
+      
+EsercenteBookPay:
+  ribbon:
+   ReadTimeout: 120000
+   ConnectTimeout: 120000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+   eager-load:
+    enabled: true  
+ClienteBookPay:
+  ribbon:
+   ReadTimeout: 120000
+   ConnectTimeout: 120000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100
+   eager-load:
+    enabled: true
+PrenotazioneBookPay:
+  ribbon:
+   ReadTimeout: 60000
+   ConnectTimeout: 20000
+   MaxTotalHttpConnections: 500
+   MaxConnectionsPerHost: 100 
+   
+      
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 600000
+            
+            
+    
+# ==============================================================
+# = Logs Parameters
+# ==============================================================        
+logging:
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.security: DEBUG
+
+# ==============================================================
+# = Actuator Parameters
+# ==============================================================
+management:
+  info:
+    git:
+      mode: full
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,routes,filters
+        
+# ==============================================================
+# = Actuator Info
+# ==============================================================
+info:
+  assistenza:
+    nome: "Book pay"
+  nome:
+    nome-app: "Book Pay Gateway - Versione JWT"    
+            
+            
+# ==============================================================
+# = sicurezza Properties 
+# ==============================================================
+sicurezza:
+    uri: /gateway/auth
+    header: Authorization
+    prefix: Bearer 
+    expiration: 86400
+    secret: book_pay_2020

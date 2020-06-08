@@ -1,16 +1,16 @@
 package com.book.cloud.service;
 
-import com.book.cloud.entity.ClientiAppuntamentiEntity;
-import com.book.cloud.entity.ClientiEntity;
-import com.book.cloud.entity.EsercenteEntity;
+import com.book.cloud.entity.DClienti;
+import com.book.cloud.entity.DEsercente;
+import com.book.cloud.entity.DPrenotazioni;
 
 public interface PrenotazioneService {
 
 	
-	public void prenota(ClientiAppuntamentiEntity appuntamentiEntity);
+	public void prenota(DPrenotazioni appuntamentiEntity);
 
-	public ClientiEntity loadCliente(String idCliente);
+	public DClienti loadCliente(String idCliente);
 
-	public EsercenteEntity loadEsercente(String idEsercente);
+	public DEsercente loadEsercente(String idEsercente);
 	
 }

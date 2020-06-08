@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bookpay.cloud.entity.ClientiEntity;
+import com.bookpay.cloud.entity.DClienti;
 import com.bookpay.service.ClienteService;
 
 @RestController
@@ -21,7 +21,7 @@ public class GestioneClienteController {
 	@Autowired
 	private ClienteService service;
 	
-	public ResponseEntity<String>registra(@RequestBody ClientiEntity cliente){
+	public ResponseEntity<String>registra(@RequestBody DClienti cliente){
 		
 		logger.info("inizio registra");
 		String mess = "";

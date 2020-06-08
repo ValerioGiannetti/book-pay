@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.book.cloud.entity.ClientiAppuntamentiEntity;
-import com.book.cloud.entity.ClientiEntity;
-import com.book.cloud.entity.EsercenteEntity;
+import com.book.cloud.entity.DClienti;
+import com.book.cloud.entity.DEsercente;
+import com.book.cloud.entity.DPrenotazioni;
 import com.book.cloud.repository.ClienteRepository;
 import com.book.cloud.repository.EsercenteRepository;
 import com.book.cloud.repository.PrenotazioneRepository;
@@ -22,8 +22,8 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private ClientiEntity clientiEntity;
-	private EsercenteEntity esercenteEntity;
+	private DClienti clientiEntity;
+	private DEsercente esercenteEntity;
 	
 	@Autowired
 	private PrenotazioneRepository repository;
@@ -35,7 +35,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	private ClienteRepository clienteRepo;
 	
 	@Override
-	public void prenota(ClientiAppuntamentiEntity appuntamentiEntity) {
+	public void prenota(DPrenotazioni appuntamentiEntity) {
 		
 		logger.info("inizio prenota");
 		
@@ -50,11 +50,11 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	}
 
 	@Override
-	public ClientiEntity loadCliente(String idCliente) {
+	public DClienti loadCliente(String idCliente) {
 		
 		logger.info("inizio loadCliente");
 		
-		Optional<ClientiEntity> output = clienteRepo.findById(Long.valueOf(idCliente));
+		Optional<DClienti> output = clienteRepo.findById(Long.valueOf(idCliente));
 		
 		output.ifPresent(consumer->{
 			clientiEntity = consumer;
@@ -67,11 +67,12 @@ public class PrenotazioneServiceImpl implements PrenotazioneService {
 	}
 
 	@Override
-	public EsercenteEntity loadEsercente(String idEsercente) {
+	public DEsercente loadEsercente(String idEsercente) {
 
 		logger.info("inizio loadEsercente");
 
-		Optional<EsercenteEntity> output = esercenteRepository.findById(Long.valueOf(idEsercente));
+		Optional<DEsercente
+		> output = esercenteRepository.findById(Long.valueOf(idEsercente));
 
 		output.ifPresent(consumer -> {
 			esercenteEntity = consumer;

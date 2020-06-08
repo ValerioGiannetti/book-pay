@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bookpay.cloud.business.EsercenteService;
 import com.bookpay.cloud.dto.EsercenteDto;
 import com.bookpay.cloud.dto.NegozioEsercenteDto;
-import com.bookpay.cloud.entity.EsercenteEntity;
-import com.bookpay.cloud.entity.EsercenteNegozioEntity;
+import com.bookpay.cloud.entity.DEsercente;
+import com.bookpay.cloud.entity.DNegoziEsercente;
+
 
 @RestController
 @RequestMapping(value = "/api/gestione-esercente/")
@@ -31,7 +32,7 @@ public class GestioneEsercenteController {
 	private EsercenteService service;
 
 	@PostMapping(value = "registra")
-	public ResponseEntity<String> registrazione(@RequestBody EsercenteEntity esercente) {
+	public ResponseEntity<String> registrazione(@RequestBody DEsercente esercente) {
 
 		logger.info("inizio registrazione");
 		String mess = "";
@@ -50,7 +51,7 @@ public class GestioneEsercenteController {
 	public ResponseEntity<List<EsercenteDto>> listaEsercenti() {
 
 		logger.info("inizio listaEsercenti");
-		List<EsercenteEntity> lista = null;
+		List<DEsercente> lista = null;
 		List<EsercenteDto> listaOutput = null;
 		List<NegozioEsercenteDto> listaNegozioOutput = null;
 		try {
@@ -61,16 +62,16 @@ public class GestioneEsercenteController {
 
 				listaOutput = new ArrayList<EsercenteDto>();
 				listaNegozioOutput = new ArrayList<NegozioEsercenteDto>();
-				for (EsercenteEntity esercenteEntity : lista) {
+				for (DEsercente esercenteEntity : lista) {
 					EsercenteDto dto = new EsercenteDto();
 
 					BeanUtils.copyProperties(esercenteEntity, dto);
-					for (EsercenteNegozioEntity esercenteNegozioEntity : esercenteEntity.getListaNegozi()) {
+					for (DNegoziEsercente esercenteNegozioEntity : esercenteEntity.getDNegoziEsercentes()) {
 						NegozioEsercenteDto neDto = new NegozioEsercenteDto();
 						BeanUtils.copyProperties(esercenteNegozioEntity, neDto);
 						listaNegozioOutput.add(neDto);
 					}
-					dto.setListaNegozi(listaNegozioOutput);
+				//	dto.setListaNegozi(listaNegozioOutput);
 					listaOutput.add(dto);
 				}
 
