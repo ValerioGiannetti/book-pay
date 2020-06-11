@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -81,18 +82,19 @@ public class LoginActivity extends AppCompatActivity {
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
+                Log.d("TAG LOGIN","afterTextChangedListener");
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
+                Log.d("TAG LOGIN","onTextChanged");
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+                Log.d("TAG LOGIN","");
             }
         };
         usernameEditText.addTextChangedListener(afterTextChangedListener);

@@ -3,6 +3,7 @@ package com.book.pay.app;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -25,8 +26,10 @@ import com.book.pay.app.api.EsercenteApi;
 import com.book.pay.app.api.EsercenteApiClient;
 import com.book.pay.app.fragment.NavigationDrawerFragment;
 import com.book.pay.app.model.Esercente;
+import com.book.pay.app.ui.login.LoginActivity;
 import com.book.pay.app.util.Coordinate;
 import com.book.pay.app.util.LocationUtil;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -88,19 +91,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            checkLocationPermission();
+        /*SharedPreferences sp= this.getSharedPreferences("Login", MODE_PRIVATE);
 
-            LocationAsynTask locationAsynTask = new LocationAsynTask();
-            locationUtil = new LocationUtil(this);
-            locationAsynTask.execute(locationUtil);
+        String token=sp.getString("token", null);
+        if(token == null || token.equals("")){
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }*/
+        checkLocationPermission();
+
+        LocationAsynTask locationAsynTask = new LocationAsynTask();
+        locationUtil = new LocationUtil(this);
+        locationAsynTask.execute(locationUtil);
 
     }
 
@@ -110,13 +116,22 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         setContentView(R.layout.activity_main);
 
-        if(locationUtil != null && locationUtil.getCoordinate() != null){
-            SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(),Context.MODE_PRIVATE);
-            preferences.edit().putString("Latitudine",locationUtil.getCoordinate().getLatitudine());
+        if (locationUtil != null && locationUtil.getCoordinate() != null) {
+            SharedPreferences preferences = this.getSharedPreferences(this.getPackageName(), Context.MODE_PRIVATE);
+            preferences.edit().putString("Latitudine", locationUtil.getCoordinate().getLatitudine());
 
             rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
             rvEsercente.setHasFixedSize(true);
         }
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         if ((this.lista == null || this.lista.isEmpty()) && this.locationUtil.lastLocation(coordinateInstance)) {
@@ -194,15 +209,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Coordinate coordinate) {
             super.onPostExecute(coordinate);
-            progressBar.stopNestedScroll();
 
-            //TODO implementare chiamata per ricerca esercente;
+            setContentView(R.layout.activity_main);
 
-                setContentView(R.layout.activity_main);
-
-                rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
-                rvEsercente.setHasFixedSize(true);
-
+            rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
+            rvEsercente.setHasFixedSize(true);
 
 
             if (lista == null || lista.isEmpty()) {
@@ -217,7 +228,8 @@ public class MainActivity extends AppCompatActivity {
                         rvEsercente.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                         LinearLayout layout = findViewById(R.id.bottom_app_bar_content_container);
-
+                        progressBar.setVisibility(View.GONE);
+                        progressBar.invalidate();
                         layout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -240,12 +252,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
-
-
-          //  setContentView(R.layout.activity_main);
-          //  rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
-          //  rvEsercente.setHasFixedSize(true);
+            //  setContentView(R.layout.activity_main);
+            //  rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
+            //  rvEsercente.setHasFixedSize(true);
 
             if (coordinate != null) {
                 coordinateInstance = coordinate;

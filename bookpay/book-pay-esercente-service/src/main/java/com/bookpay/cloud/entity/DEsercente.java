@@ -30,25 +30,25 @@ public class DEsercente implements java.io.Serializable {
 	
 	private Integer idEsercente;
 	
-	private DUtente DUtente;
+	private DUtente dUtente;
 	
 	private String piva;
 	
 	
-	private Set<DNegoziEsercente> DNegoziEsercentes = new HashSet<DNegoziEsercente>(0);
+	private Set<DNegoziEsercente> dNegoziEsercentes = new HashSet<DNegoziEsercente>(0);
 
 	public DEsercente() {
 	}
 
 	public DEsercente(DUtente DUtente, String piva) {
-		this.DUtente = DUtente;
+		this.dUtente = DUtente;
 		this.piva = piva;
 	}
 
 	public DEsercente(DUtente DUtente, String piva, Set<DNegoziEsercente> DNegoziEsercentes) {
-		this.DUtente = DUtente;
+		this.dUtente = DUtente;
 		this.piva = piva;
-		this.DNegoziEsercentes = DNegoziEsercentes;
+		this.dNegoziEsercentes = DNegoziEsercentes;
 	}
 	
 	@Id
@@ -65,11 +65,11 @@ public class DEsercente implements java.io.Serializable {
 	@JoinColumn(name = "fk_utente")
 	@JsonIgnore
 	public DUtente getDUtente() {
-		return this.DUtente;
+		return this.dUtente;
 	}
 
 	public void setDUtente(DUtente DUtente) {
-		this.DUtente = DUtente;
+		this.dUtente = DUtente;
 	}
 	@Column(name = "piva")
 	public String getPiva() {
@@ -83,11 +83,11 @@ public class DEsercente implements java.io.Serializable {
 	@OneToMany(mappedBy = "DEsercente", cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
 	public Set<DNegoziEsercente> getDNegoziEsercentes() {
-		return this.DNegoziEsercentes;
+		return this.dNegoziEsercentes;
 	}
 
 	public void setDNegoziEsercentes(Set<DNegoziEsercente> DNegoziEsercentes) {
-		this.DNegoziEsercentes = DNegoziEsercentes;
+		this.dNegoziEsercentes = DNegoziEsercentes;
 	}
 
 }

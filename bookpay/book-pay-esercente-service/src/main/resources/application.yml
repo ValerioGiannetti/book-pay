@@ -10,7 +10,9 @@ spring:
    #   database: book_pay_db
     #  port: 27017
      # host: localhost  datasource:    url: jdbc:mysql://localhost:3306/book_pay_db
-    username: root  jpa:    hibernate:      ddl-auto: none    show-sql: true
+    username: root
+    
+        jpa:    hibernate:      ddl-auto: none    show-sql: true    database-platform: org.hibernate.dialect.MySQLDialect
 eureka:
   client:
     serviceUrl:

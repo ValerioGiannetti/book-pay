@@ -27,21 +27,21 @@ public class DNegoziEsercente implements java.io.Serializable {
 	
 	
 	private Integer idNegoziEsercente;
-	private DEsercente DEsercente;
+	private DEsercente dEsercente;
 	private String nome;
 	private String via;
 	private String cap;
 	private String latitudine;
 	private String longitudine;
 	
-	private Set<DStaffNegozio> DStaffNegozios = new HashSet<DStaffNegozio>(0);
+	private Set<DStaffNegozio> dStaffNegozios = new HashSet<DStaffNegozio>(0);
 
 	public DNegoziEsercente() {
 	}
 
 	public DNegoziEsercente(DEsercente DEsercente, String nome, String via, String cap, String latitudine,
 			String longitudine) {
-		this.DEsercente = DEsercente;
+		this.dEsercente = DEsercente;
 		this.nome = nome;
 		this.via = via;
 		this.cap = cap;
@@ -51,13 +51,13 @@ public class DNegoziEsercente implements java.io.Serializable {
 
 	public DNegoziEsercente(DEsercente DEsercente, String nome, String via, String cap, String latitudine,
 			String longitudine, Set<DStaffNegozio> DStaffNegozios) {
-		this.DEsercente = DEsercente;
+		this.dEsercente = DEsercente;
 		this.nome = nome;
 		this.via = via;
 		this.cap = cap;
 		this.latitudine = latitudine;
 		this.longitudine = longitudine;
-		this.DStaffNegozios = DStaffNegozios;
+		this.dStaffNegozios = DStaffNegozios;
 	}
 	
 	@Id
@@ -74,11 +74,11 @@ public class DNegoziEsercente implements java.io.Serializable {
 	@ManyToOne
 	@JoinColumn(name = "fk_esercente")
 	public DEsercente getDEsercente() {
-		return this.DEsercente;
+		return this.dEsercente;
 	}
 
 	public void setDEsercente(DEsercente DEsercente) {
-		this.DEsercente = DEsercente;
+		this.dEsercente = DEsercente;
 	}
 	@Column(name = "nome")
 	public String getNome() {
@@ -123,11 +123,11 @@ public class DNegoziEsercente implements java.io.Serializable {
 	@OneToMany(mappedBy = "DNegoziEsercente", cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
 	public Set<DStaffNegozio> getDStaffNegozios() {
-		return this.DStaffNegozios;
+		return this.dStaffNegozios;
 	}
 
 	public void setDStaffNegozios(Set<DStaffNegozio> DStaffNegozios) {
-		this.DStaffNegozios = DStaffNegozios;
+		this.dStaffNegozios = DStaffNegozios;
 	}
 
 }

@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             app:layout_anchor="@id/bottom_app_bar"
             android:contentDescription="@string/fab_compose_email_content_description"
-            app:srcCompat="@drawable/ic_add_black_24dp" />
+            app:srcCompat="@drawable/icons8_login_64" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

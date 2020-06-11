@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Reply.DayNight">
         <activity
             android:name=".ui.login.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".LauncherBookPayActivity"
             android:theme="@style/SplashTheme">

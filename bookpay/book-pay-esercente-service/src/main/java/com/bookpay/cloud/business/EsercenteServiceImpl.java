@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bookpay.cloud.dto.EsercenteDto;
 import com.bookpay.cloud.entity.DEsercente;
 
 import com.bookpay.cloud.repository.EsercenteRepository;
@@ -28,10 +29,14 @@ public class EsercenteServiceImpl implements EsercenteService{
 	}
 
 	@Override
-	public void saveEsercente(DEsercente esercente) {
+	public void saveEsercente(EsercenteDto dto) {
+		
 		logger.info("inizio saveEsercente");
 		try {
+			
+			DEsercente esercente = new DEsercente();
 			repository.save(esercente);
+			
 		}catch (Exception e) {
 			logger.info("errore saveEsercente");
 			throw e;
@@ -41,10 +46,14 @@ public class EsercenteServiceImpl implements EsercenteService{
 
 	@Override
 	public List<DEsercente> findAll() {
+		
 		logger.info("inizio findAll");
 		List<DEsercente>listaEser = null;
+		
 		try {
+		
 			listaEser = (List<DEsercente>) repository.findAll();
+		
 		}catch (Exception e) {
 			logger.info("errore findAll");
 			throw e;
