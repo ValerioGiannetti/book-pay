@@ -1,8 +1,5 @@
 package com.gateway.cloud.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class StaffDto {
 
 	private String idStaffNegozio;
@@ -11,7 +8,6 @@ public class StaffDto {
 	private String cognome;
 	private String numeroAppuntamentiGiorno;
 	
-	private Set<PrenotazioniDto> listaPrenotazioni = new HashSet<PrenotazioniDto>(0);
 
 	public String getIdStaffNegozio() {
 		return idStaffNegozio;
@@ -44,15 +40,5 @@ public class StaffDto {
 	public void setNumeroAppuntamentiGiorno(String numeroAppuntamentiGiorno) {
 		this.numeroAppuntamentiGiorno = numeroAppuntamentiGiorno;
 	}
-
-	public Set<PrenotazioniDto> getListaPrenotazioni() {
-		return listaPrenotazioni;
-	}
-
-	public void setListaPrenotazioni(Set<PrenotazioniDto> listaPrenotazioni) {
-		this.listaPrenotazioni = listaPrenotazioni;
-	}
-	
-	
 
 }

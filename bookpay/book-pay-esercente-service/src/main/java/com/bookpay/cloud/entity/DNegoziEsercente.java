@@ -27,21 +27,23 @@ public class DNegoziEsercente implements java.io.Serializable {
 	
 	
 	private Integer idNegoziEsercente;
-	private DEsercente dEsercente;
+	private DEsercente DEsercente;
 	private String nome;
 	private String via;
 	private String cap;
 	private String latitudine;
 	private String longitudine;
 	
-	private Set<DStaffNegozio> dStaffNegozios = new HashSet<DStaffNegozio>(0);
-
+	private Set<DStaffNegozio> DStaffNegozios = new HashSet<DStaffNegozio>(0);
+	private int dCittaIstat;
+	
+	
 	public DNegoziEsercente() {
 	}
 
 	public DNegoziEsercente(DEsercente DEsercente, String nome, String via, String cap, String latitudine,
 			String longitudine) {
-		this.dEsercente = DEsercente;
+		this.DEsercente = DEsercente;
 		this.nome = nome;
 		this.via = via;
 		this.cap = cap;
@@ -51,13 +53,13 @@ public class DNegoziEsercente implements java.io.Serializable {
 
 	public DNegoziEsercente(DEsercente DEsercente, String nome, String via, String cap, String latitudine,
 			String longitudine, Set<DStaffNegozio> DStaffNegozios) {
-		this.dEsercente = DEsercente;
+		this.DEsercente = DEsercente;
 		this.nome = nome;
 		this.via = via;
 		this.cap = cap;
 		this.latitudine = latitudine;
 		this.longitudine = longitudine;
-		this.dStaffNegozios = DStaffNegozios;
+		this.DStaffNegozios = DStaffNegozios;
 	}
 	
 	@Id
@@ -74,11 +76,11 @@ public class DNegoziEsercente implements java.io.Serializable {
 	@ManyToOne
 	@JoinColumn(name = "fk_esercente")
 	public DEsercente getDEsercente() {
-		return this.dEsercente;
+		return this.DEsercente;
 	}
 
 	public void setDEsercente(DEsercente DEsercente) {
-		this.dEsercente = DEsercente;
+		this.DEsercente = DEsercente;
 	}
 	@Column(name = "nome")
 	public String getNome() {
@@ -123,11 +125,19 @@ public class DNegoziEsercente implements java.io.Serializable {
 	@OneToMany(mappedBy = "DNegoziEsercente", cascade = CascadeType.ALL,
 			fetch = FetchType.LAZY)
 	public Set<DStaffNegozio> getDStaffNegozios() {
-		return this.dStaffNegozios;
+		return this.DStaffNegozios;
 	}
 
 	public void setDStaffNegozios(Set<DStaffNegozio> DStaffNegozios) {
-		this.dStaffNegozios = DStaffNegozios;
+		this.DStaffNegozios = DStaffNegozios;
+	}
+
+	public int getdCittaIstat() {
+		return dCittaIstat;
+	}
+
+	public void setdCittaIstat(int dCittaIstat) {
+		this.dCittaIstat = dCittaIstat;
 	}
 
 }

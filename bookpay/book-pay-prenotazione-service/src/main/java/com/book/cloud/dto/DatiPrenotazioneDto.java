@@ -13,6 +13,10 @@ public class DatiPrenotazioneDto {
 	private String dataAppuntamento;
 	private String note;
 	
+	private String giorno;
+	private String mese;
+	private String anno;
+	
 	public String getIdEsercente() {
 		return idEsercente;
 	}
@@ -60,6 +64,24 @@ public class DatiPrenotazioneDto {
 	}
 	public void setIdCliente(String idCliente) {
 		this.idCliente = idCliente;
+	}
+	public String getGiorno() {
+		return giorno;
+	}
+	public void setGiorno(String giorno) {
+		this.giorno = giorno;
+	}
+	public String getMese() {
+		return mese;
+	}
+	public void setMese(String mese) {
+		this.mese = mese;
+	}
+	public String getAnno() {
+		return anno;
+	}
+	public void setAnno(String anno) {
+		this.anno = anno;
 	}
 	
 	

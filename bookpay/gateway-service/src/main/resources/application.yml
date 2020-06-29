@@ -42,13 +42,9 @@ zuul:
   stripPrefix: true
   ignoredServices: '*'
   routes:
-    esercente:
-      path: /gateway-esercente/**
-      serviceId: EsercenteBookPay
-      sensitive-headers: Cookie,Set-Cookie
-    cliente:
-      path: /gateway-cliente/**
-      serviceId: ClienteBookPay
+    bookpay:
+      path: /gateway-bookpay/**
+      serviceId: BookPayServices
       sensitive-headers: Cookie,Set-Cookie
     prenotazione:
       path: /gateway-prenotazione/**
@@ -60,7 +56,7 @@ zuul:
       sensitive-headers: Cookie,Set-Cookie
     
       
-EsercenteBookPay:
+BookPayServices:
   ribbon:
    ReadTimeout: 120000
    ConnectTimeout: 120000
@@ -68,14 +64,7 @@ EsercenteBookPay:
    MaxConnectionsPerHost: 100
    eager-load:
     enabled: true  
-ClienteBookPay:
-  ribbon:
-   ReadTimeout: 120000
-   ConnectTimeout: 120000
-   MaxTotalHttpConnections: 500
-   MaxConnectionsPerHost: 100
-   eager-load:
-    enabled: true
+
 PrenotazioneBookPay:
   ribbon:
    ReadTimeout: 60000

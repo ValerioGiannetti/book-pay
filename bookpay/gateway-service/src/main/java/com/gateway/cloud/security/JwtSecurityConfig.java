@@ -55,15 +55,11 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private static final String[] NOAUTH_MATCHER = { "/api/autorizzazione/**",
-			"/gateway-registrazione/api/registrazione/**", "/gateway-articoli/api/view/articoli/**",
-			"/gateway-promo/api/view/promo/**", };
+			"/gateway-cliente/**"};
 
-	private static final String[] CLIENTE_MATCHER = { "/gateway-cliente/api/cliente/**",
-			"/getprice/api/listino/cerca/**", "/getprice/info", "/getart/api/articoli/cerca/**" };
+	private static final String[] CLIENTE_MATCHER = { "/gateway-prenotazione/**"};
 
-	private static final String[] ESERCENTE_MATCHER = { "/gateway-articoli/api/gestione/articoli/**",
-															"/gateway-commerciante/api/commerciante/**",
-															"/gateway-commerciante/api/setup/commerciante/**"};
+	private static final String[] ESERCENTE_MATCHER = { "/gateway-esercente/**", "/gateway-prenotazione/**"};
 
 	private static final String[] ADMIN_MATCHER = { "/gateway-admin/api/admin/**", "/gateway-articoli/api/gestione/articoli/**" };
 

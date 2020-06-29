@@ -48,7 +48,7 @@ public class DUtente implements UserDetails, java.io.Serializable {
 	private DClienti cliente = new DClienti();
 	
 	private DEsercente esercente = new DEsercente();
-	@Transient
+	
 	private List<String> ruoli;
 	
 	
@@ -150,7 +150,7 @@ public class DUtente implements UserDetails, java.io.Serializable {
 	public void setEsercente(DEsercente esercente) {
 		this.esercente = esercente;
 	}
-
+	@Transient
 	public List<String> getRuoli() {
 		String rc = "CLIENTE";
 		String re = "ESERCENTE";
@@ -167,6 +167,7 @@ public class DUtente implements UserDetails, java.io.Serializable {
 	}
 
 	@Override
+	@Transient
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> aut = null;
 		if(this.ruoli != null && !this.ruoli.isEmpty()) {
@@ -182,26 +183,31 @@ public class DUtente implements UserDetails, java.io.Serializable {
 		return aut;
 	}
 	@Override
+	@Transient
 	public String getUsername() {
 		// TODO Auto-generated method stub
 		return this.email;
 	}
 	@Override
+	@Transient
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
+	@Transient
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
+	@Transient
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	@Override
+	@Transient
 	public boolean isEnabled() {
 		if(StringUtils.isNotEmpty(String.valueOf(this.attivo) )) {
 			if(String.valueOf(this.attivo).equals("Si")) {

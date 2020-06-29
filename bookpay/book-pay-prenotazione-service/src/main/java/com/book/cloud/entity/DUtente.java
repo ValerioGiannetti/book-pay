@@ -2,7 +2,6 @@ package com.book.cloud.entity;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -15,16 +14,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "d_utente")
-public class DUtente implements UserDetails, java.io.Serializable {
+public class DUtente implements  java.io.Serializable {
 
 	/**
 	 * 
@@ -48,7 +42,7 @@ public class DUtente implements UserDetails, java.io.Serializable {
 	private DClienti cliente = new DClienti();
 	
 	private DEsercente esercente = new DEsercente();
-	@Transient
+	
 	private List<String> ruoli;
 	
 	
@@ -150,7 +144,8 @@ public class DUtente implements UserDetails, java.io.Serializable {
 	public void setEsercente(DEsercente esercente) {
 		this.esercente = esercente;
 	}
-
+	
+	@Transient
 	public List<String> getRuoli() {
 		String rc = "CLIENTE";
 		String re = "ESERCENTE";
@@ -164,52 +159,6 @@ public class DUtente implements UserDetails, java.io.Serializable {
 
 	public void setRuoli(List<String> ruoli) {
 		this.ruoli = ruoli;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> aut = null;
-		if(this.ruoli != null && !this.ruoli.isEmpty()) {
-			 aut = new ArrayList<GrantedAuthority>();
-			 
-			 for (String ruolo : ruoli) {
-				 GrantedAuthority ga = new SimpleGrantedAuthority(ruolo);
-				 aut.add(ga);
-			}
-			 
-		}
-		
-		return aut;
-	}
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return this.email;
-	}
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean isEnabled() {
-		if(StringUtils.isNotEmpty(String.valueOf(this.attivo) )) {
-			if(String.valueOf(this.attivo).equals("Si")) {
-				return true;
-			}
-			return false;
-		}
-		return false;
 	}
 
 

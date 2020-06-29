@@ -39,7 +39,7 @@ public class SwapObject<S, T> {
 					
 					String temp = fieldName.substring(0, 1).toLowerCase();
 				    String nameCapitalized = temp + fieldName.substring(1);
-					System.out.println(fieldName + "=" + value);
+					//System.out.println(fieldName + "=" + value);
 					setField(target,nameCapitalized, value);
 					
 				}

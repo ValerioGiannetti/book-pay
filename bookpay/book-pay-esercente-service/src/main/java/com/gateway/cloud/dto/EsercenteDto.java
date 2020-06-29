@@ -3,7 +3,7 @@ package com.gateway.cloud.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EsercenteDto extends UtenteDto{
+public class EsercenteDto{
 
 	private String idEsercente;
 	

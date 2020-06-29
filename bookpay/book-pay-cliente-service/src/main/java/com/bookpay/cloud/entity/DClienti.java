@@ -1,19 +1,11 @@
 package com.bookpay.cloud.entity;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,8 +19,6 @@ public class DClienti implements java.io.Serializable {
 	
 	private Integer idClienti;
 	
-	private DUtente DUtente;
-	
 	private String nome;
 	
 	private String cognome;
@@ -41,33 +31,14 @@ public class DClienti implements java.io.Serializable {
 	
 	private String longitudine;
 	
-	private Set<DPrenotazioni> DPrenotazionis = new HashSet<DPrenotazioni>(0);
+
 
 	public DClienti() {
 	}
 
-	public DClienti(DUtente DUtente, String nome, String cognome, String via, String cap, String latitudine,
-			String longitudine) {
-		this.DUtente = DUtente;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.via = via;
-		this.cap = cap;
-		this.latitudine = latitudine;
-		this.longitudine = longitudine;
-	}
+	
 
-	public DClienti(DUtente DUtente, String nome, String cognome, String via, String cap, String latitudine,
-			String longitudine, Set<DPrenotazioni> DPrenotazionis) {
-		this.DUtente = DUtente;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.via = via;
-		this.cap = cap;
-		this.latitudine = latitudine;
-		this.longitudine = longitudine;
-		this.DPrenotazionis = DPrenotazionis;
-	}
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,15 +51,7 @@ public class DClienti implements java.io.Serializable {
 		this.idClienti = idClienti;
 	}
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_utente")
-	public DUtente getDUtente() {
-		return this.DUtente;
-	}
-
-	public void setDUtente(DUtente DUtente) {
-		this.DUtente = DUtente;
-	}
+	
 	@Column(name = "nome")
 	public String getNome() {
 		return this.nome;
@@ -136,15 +99,6 @@ public class DClienti implements java.io.Serializable {
 
 	public void setLongitudine(String longitudine) {
 		this.longitudine = longitudine;
-	}
-
-	@OneToMany(mappedBy = "DClienti" ,fetch = FetchType.LAZY)
-	public Set<DPrenotazioni> getDPrenotazionis() {
-		return this.DPrenotazionis;
-	}
-
-	public void setDPrenotazionis(Set<DPrenotazioni> DPrenotazionis) {
-		this.DPrenotazionis = DPrenotazionis;
 	}
 
 }

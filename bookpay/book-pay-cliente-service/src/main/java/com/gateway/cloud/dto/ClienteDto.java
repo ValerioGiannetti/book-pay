@@ -1,9 +1,6 @@
 package com.gateway.cloud.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
-public class ClienteDto extends UtenteDto{
+public class ClienteDto{
 
 	private String idClienti;
 	private String nome;
@@ -12,7 +9,7 @@ public class ClienteDto extends UtenteDto{
 	private String cap;
 	private String latitudine;
 	private String longitudine;
-	private Set<PrenotazioniDto> listaPrenotazioni = new HashSet<PrenotazioniDto>(0);
+	private String token;
 	
 	public String getIdClienti() {
 		return idClienti;
@@ -56,12 +53,13 @@ public class ClienteDto extends UtenteDto{
 	public void setLongitudine(String longitudine) {
 		this.longitudine = longitudine;
 	}
-	public Set<PrenotazioniDto> getListaPrenotazioni() {
-		return listaPrenotazioni;
+	public String getToken() {
+		return token;
 	}
-	public void setListaPrenotazioni(Set<PrenotazioniDto> listaPrenotazioni) {
-		this.listaPrenotazioni = listaPrenotazioni;
+	public void setToken(String token) {
+		this.token = token;
 	}
+	
 	
 	
 }

@@ -1,18 +1,12 @@
 package com.bookpay.cloud.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -33,8 +27,6 @@ public class DStaffNegozio implements java.io.Serializable {
 	
 	private String numeroAppuntamentiGiorno;
 	
-	
-	private Set<DPrenotazioni> DPrenotazionis = new HashSet<DPrenotazioni>(0);
 
 	public DStaffNegozio() {
 	}
@@ -46,12 +38,12 @@ public class DStaffNegozio implements java.io.Serializable {
 	}
 
 	public DStaffNegozio(DNegoziEsercente DNegoziEsercente, String nome, String cognome,
-			String numeroAppuntamentiGiorno, Set<DPrenotazioni> DPrenotazionis) {
+			String numeroAppuntamentiGiorno) {
 		this.DNegoziEsercente = DNegoziEsercente;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.numeroAppuntamentiGiorno = numeroAppuntamentiGiorno;
-		this.DPrenotazionis = DPrenotazionis;
+		
 	}
 	
 	@Id
@@ -97,14 +89,5 @@ public class DStaffNegozio implements java.io.Serializable {
 	public void setNumeroAppuntamentiGiorno(String numeroAppuntamentiGiorno) {
 		this.numeroAppuntamentiGiorno = numeroAppuntamentiGiorno;
 	}
-	@OneToMany(mappedBy = "DStaffNegozio", cascade = CascadeType.ALL,
-			fetch = FetchType.LAZY)
-	public Set<DPrenotazioni> getDPrenotazionis() {
-		return this.DPrenotazionis;
-	}
-
-	public void setDPrenotazionis(Set<DPrenotazioni> DPrenotazionis) {
-		this.DPrenotazionis = DPrenotazionis;
-	}
-
+	
 }

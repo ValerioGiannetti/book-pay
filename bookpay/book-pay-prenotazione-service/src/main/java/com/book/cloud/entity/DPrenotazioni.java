@@ -29,19 +29,22 @@ public class DPrenotazioni implements java.io.Serializable {
 	private String ora;
 	private String minuti;
 	private Date dataPrenotazione;
-	
+	private String mese;
+	private String anno;
 	
 	public DPrenotazioni() {
 	}
 
 	public DPrenotazioni(DClienti DClienti, DStaffNegozio DStaffNegozio, String giorno, String ora, String minuti,
-			Date dataPrenotazione) {
+			Date dataPrenotazione,String mese,String anno) {
 		this.DClienti = DClienti;
 		this.DStaffNegozio = DStaffNegozio;
 		this.giorno = giorno;
 		this.ora = ora;
 		this.minuti = minuti;
 		this.dataPrenotazione = dataPrenotazione;
+		this.setMese(mese);
+		this.setAnno(anno);
 	}
 	
 	@Id
@@ -102,6 +105,22 @@ public class DPrenotazioni implements java.io.Serializable {
 
 	public void setDataPrenotazione(Date dataPrenotazione) {
 		this.dataPrenotazione = dataPrenotazione;
+	}
+	@Column(name = "mese")
+	public String getMese() {
+		return mese;
+	}
+
+	public void setMese(String mese) {
+		this.mese = mese;
+	}
+	@Column(name = "anno")
+	public String getAnno() {
+		return anno;
+	}
+
+	public void setAnno(String anno) {
+		this.anno = anno;
 	}
 
 }

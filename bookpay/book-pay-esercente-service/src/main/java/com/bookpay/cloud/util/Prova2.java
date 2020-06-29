@@ -33,9 +33,11 @@ public class Prova2 {
 	public String toString() {
 		
 		String concat = "";
+		int conta = 1;
 		for (Prova4 prova4 : lis1) {
 			concat = prova4.getIdS()+" "+prova4.getNomeS();
-			System.out.println("LISTA "+ concat);
+			System.out.println("LISTA "+conta+" "+ concat);
+			conta++;
 		}
 		
 		return this.id +" "+ this.nome+" "+concat;
