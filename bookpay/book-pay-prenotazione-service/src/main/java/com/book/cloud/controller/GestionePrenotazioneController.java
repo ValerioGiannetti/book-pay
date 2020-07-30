@@ -62,6 +62,14 @@ public class GestionePrenotazioneController {
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	@PutMapping(value = "prenotazione-consumata")
 	public ResponseEntity<String> prenotazioneConsumata(@RequestParam String idClienteApp){
 		

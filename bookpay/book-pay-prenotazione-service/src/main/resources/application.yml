@@ -32,6 +32,5 @@ ribbon:
 logging:
   level:
     org.apache.logging.slf4j: INFO
-    org.springframework.data.mongodb.repository.query: DEBUG
-    org.springframework.data.mongodb.core: DEBUG
+    org.springframework.data.jpa: debug
     

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.book.pay.app.adapter.EsercenteAdapter;
+import com.book.pay.app.adapter.PlaceAdapter;
 import com.book.pay.app.api.EsercenteApi;
 import com.book.pay.app.api.EsercenteApiClient;
 import com.book.pay.app.fragment.NavigationDrawerFragment;
@@ -29,8 +31,20 @@ import com.book.pay.app.model.Esercente;
 import com.book.pay.app.ui.login.LoginActivity;
 import com.book.pay.app.util.Coordinate;
 import com.book.pay.app.util.LocationUtil;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private Coordinate coordinateInstance;
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
+    private PlacesClient placesClient;
 
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
@@ -94,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Places.initialize(getApplicationContext(), "AIzaSyCxGRr-AB1hgz5L9r2BHuaiNVJSVVDdQvU");
+
+        this.placesClient = Places.createClient(this);
+
+
 
         /*SharedPreferences sp= this.getSharedPreferences("Login", MODE_PRIVATE);
 
@@ -135,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if ((this.lista == null || this.lista.isEmpty()) && this.locationUtil.lastLocation(coordinateInstance)) {
+
             EsercenteApiClient esercenteApiClient = new EsercenteApiClient();
             api = esercenteApiClient.getClient().create(EsercenteApi.class);
             api.esercenteAllList().enqueue(new Callback<List<Esercente>>() {
@@ -178,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         protected Coordinate doInBackground(final LocationUtil... locationUtils) {
             Coordinate coordinate = new Coordinate();
 
-            while (coordinate.getLatitudine() == null) {
+            /*while (coordinate.getLatitudine() == null) {
 
                 if (locationUtils[0].getLocationTask(coordinate)) {
                     if (coordinate.getLatitudine() != null && coordinate.getLongitudine() != null) {
@@ -189,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-            }
+            }*/
             return coordinate;
         }
 
@@ -207,16 +228,85 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Coordinate coordinate) {
+        protected void onPostExecute(final Coordinate coordinate) {
             super.onPostExecute(coordinate);
 
             setContentView(R.layout.activity_main);
 
-            rvEsercente = (RecyclerView) findViewById(R.id.recycler_view);
+            rvEsercente = findViewById(R.id.recycler_view);
             rvEsercente.setHasFixedSize(true);
 
+            List<Place.Field> placeFields = Collections.singletonList(Place.Field.NAME);
+            List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS);
 
-            if (lista == null || lista.isEmpty()) {
+            FindCurrentPlaceRequest request = FindCurrentPlaceRequest.builder(fields).build();
+
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
+
+            placeResponse.addOnCompleteListener(new OnCompleteListener<FindCurrentPlaceResponse>() {
+                @Override
+                public void onComplete(@NonNull Task<FindCurrentPlaceResponse> task) {
+                    if(task.isSuccessful()){
+                        FindCurrentPlaceResponse response = task.getResult();
+
+                        PlaceAdapter adapter = new PlaceAdapter(getApplicationContext(), response.getPlaceLikelihoods());
+                        rvEsercente.setAdapter(adapter);
+                        rvEsercente.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                        LinearLayout layout = findViewById(R.id.bottom_app_bar_content_container);
+                        progressBar.setVisibility(View.GONE);
+                        progressBar.invalidate();
+                        layout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                NavigationDrawerFragment navigationDrawerFragment = new NavigationDrawerFragment();
+                                navigationDrawerFragment.show(getSupportFragmentManager(), "TAG");
+                            }
+                        });
+
+                        //        Toast.makeText(getApplicationContext(),"RISULTATO:",Toast.LENGTH_LONG).show();
+
+
+                        int position = 0;
+                        for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
+
+                            Log.i("TAG", String.format("Place '%s' has likelihood: %f",
+                                    placeLikelihood.getPlace().getName(),
+                                    placeLikelihood.getLikelihood()));
+
+                            Log.i("TAG",String.format("ADDRES '%s' PHONE '%s' RATING '%s'",
+                                    placeLikelihood.getPlace().getAddress(),
+                                    placeLikelihood.getPlace().getPhoneNumber(),
+                                    placeLikelihood.getPlace().getRating()
+                                    )
+                            );
+                        }
+
+                    }else {
+                        Exception exception = task.getException();
+                        if (exception instanceof ApiException) {
+                            ApiException apiException = (ApiException) exception;
+                            Log.e("TAG", "Place not found: " + apiException.getStatusCode());
+                        }
+                    }
+
+                }
+            });
+
+
+
+       /*     if (lista == null || lista.isEmpty()) {
                 EsercenteApiClient esercenteApiClient = new EsercenteApiClient();
                 api = esercenteApiClient.getClient().create(EsercenteApi.class);
                 api.esercenteAllList().enqueue(new Callback<List<Esercente>>() {
@@ -249,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-            }
+            }*/
 
 
             //  setContentView(R.layout.activity_main);

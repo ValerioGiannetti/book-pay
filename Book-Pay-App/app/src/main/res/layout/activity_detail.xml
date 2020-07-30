@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
+            android:paddingRight="300dp"
             android:paddingTop="60dp"
             android:text="TextView" />
 
@@ -45,6 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true" />
+
+
+
     </LinearLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -107,6 +111,13 @@
         app:layout_anchor="@id/bottom_app_bar"
         android:contentDescription="@string/fab_compose_email_content_description"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

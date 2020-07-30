@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private PrenotazioneApi prenotazioneApi;
     private  CalendarView calendarView;
+
+    DatePicker picker;
+
     private int anno;
     private int mese = 1; // metto uno perchè il mese del calendar parte da 0;
     private int giorno;
@@ -98,6 +102,9 @@ public class DetailActivity extends AppCompatActivity {
                 if(token == null || token.equals("")){
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
+
+                    finish();
+                    return;
                 }
 
 
@@ -134,11 +141,6 @@ public class DetailActivity extends AppCompatActivity {
                         Log.d("RITORNO", t.toString());
                     }
                 });
-
-
-
-
-
 
                 Toast.makeText(getApplicationContext(),"Tra  "+giorniRimanenti+" "+giornoText+" sarà il tuo turno",Toast.LENGTH_LONG).show();
 

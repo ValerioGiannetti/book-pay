@@ -3,6 +3,7 @@ package com.bookpay.cloud.service;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -121,6 +122,33 @@ public class UtenteServiceImpl implements UtenteService {
 		
 		
 		logger.info("fine registrazione utente");
+	}
+
+	@Override
+	public void attivazioneAutente(String idUtente) {
+		
+		logger.info("inizio attivazione utente");
+		try {
+			
+			Optional<DUtente> utente = repository.findById(Integer.valueOf(idUtente));
+			
+			utente.ifPresent(value->{
+				
+				value.setAttivo("S");
+				value.setDataAttivazione(Calendar.getInstance().getTime());
+				
+				repository.save(value);
+				
+				
+			});
+			
+			
+		}catch (Exception e) {
+			throw e;
+		}
+		
+		logger.info("fine attivazione utente");
+		
 	}
 
 }
